@@ -27,7 +27,7 @@ if prompt := st.chat_input("O co chcesz zapytać?"):
                 if response.status_code == 200:
                     data = response.json()
                     answer = data.get("answer", "Błąd braku odpowiedzi.")
-                    sources = list(set(data.get("sources", [])))
+                    sources = list(dict.fromkeys(data.get("sources", [])[:5]))
 
                     full_response = answer
                     if sources:

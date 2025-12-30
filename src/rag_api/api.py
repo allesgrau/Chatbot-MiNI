@@ -38,6 +38,6 @@ def chat_endpoint(request: QueryRequest):
 
     answer = query_llm(prompt)
 
-    sources = [chunk.get("source_url", "Unknown") for chunk in sorted_chunks]
+    sources = [chunk.get("source_url", "Unknown") for chunk in sorted_chunks[:5]]
 
     return {"answer": answer, "sources": sources}
