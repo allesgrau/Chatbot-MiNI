@@ -2,7 +2,7 @@ name: Deploy Chatbot MiNI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ new_pipeline ]
 
 jobs:
   deploy:
@@ -14,7 +14,6 @@ jobs:
 
       - name: Create .env file
         run: |
-          # Tutaj robot tworzy plik z Twoimi kluczami
           echo "OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}" > .env
           echo "FIRECRAWL_API_KEY=${{ secrets.FIRECRAWL_API_KEY }}" >> .env
           echo "PIPELINE_VERSION=${{ vars.PIPELINE_VERSION }}" >> .env
