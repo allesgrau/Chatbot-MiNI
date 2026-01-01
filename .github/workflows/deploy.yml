@@ -1,0 +1,31 @@
+name: Deploy Chatbot MiNI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          # Tutaj robot tworzy plik z Twoimi kluczami
+          echo "OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}" > .env
+          echo "FIRECRAWL_API_KEY=${{ secrets.FIRECRAWL_API_KEY }}" >> .env
+          echo "PIPELINE_VERSION=${{ vars.PIPELINE_VERSION }}" >> .env
+          echo "PYTHONUNBUFFERED=1" >> .env
+          echo "PYTHONPATH=/app/src" >> .env
+
+      - name: Build and Run Scraper
+        run: docker-compose up --build scraper
+
+      - name: Run Data Processing (Ingest Service)
+        run: docker-compose up ingest
+
+      - name: Start API and Frontend
+        run: docker-compose up -d api frontend
