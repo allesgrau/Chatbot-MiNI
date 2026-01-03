@@ -2,9 +2,9 @@ import logging
 import os
 from typing import Any
 
-from data_ingest.modules.embedder import Embedder
-from data_ingest.modules.vector_db import load_vector_db
-from utils.paths import get_data_dir
+from src.data_ingest.modules.embedder import Embedder
+from src.data_ingest.modules.vector_db import load_vector_db
+from src.utils.paths import get_data_dir
 
 logger = logging.getLogger(__name__)
 

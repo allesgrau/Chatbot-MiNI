@@ -3,9 +3,9 @@ import logging
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from rag_api.main import query_llm
-from rag_api.modules.prompt_builder import build_prompt
-from rag_api.modules.retrieval import get_top_k_chunks
+from src.rag_api.main import query_llm
+from src.rag_api.modules.prompt_builder import build_prompt
+from src.rag_api.modules.retrieval import get_top_k_chunks
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
