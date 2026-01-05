@@ -103,10 +103,10 @@ def main():
         for txt_file in files:
             base_name = os.path.splitext(txt_file)[0]
             txt_path = os.path.join(folder, txt_file)
-            
+
             with open(txt_path, encoding="utf-8") as f:
                 lines = f.readlines()
-            
+
             if lines and lines[0].startswith("URL: "):
                 source_url = lines[0].replace("URL: ", "").strip()
                 text_content = "".join(lines[1:]).strip()

@@ -1,7 +1,9 @@
 import logging
-from src.pipeline.common import get_llm_client, MODEL_WORKER
+
+from src.pipeline.common import MODEL_WORKER, get_llm_client
 
 logger = logging.getLogger(__name__)
+
 
 def translate_text(text: str, target_lang_code: str) -> str:
     """
@@ -11,12 +13,8 @@ def translate_text(text: str, target_lang_code: str) -> str:
     if not text:
         return ""
 
-    lang_map = {
-        "pl": "Polish",
-        "en": "English",
-        "ua": "Ukrainian"
-    }
-    
+    lang_map = {"pl": "Polish", "en": "English", "ua": "Ukrainian"}
+
     target_lang_name = lang_map.get(target_lang_code, "Polish")
 
     client = get_llm_client()
@@ -34,13 +32,13 @@ def translate_text(text: str, target_lang_code: str) -> str:
             model=MODEL_WORKER,
             messages=[
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": text}
+                {"role": "user", "content": text},
             ],
-            temperature=0.1
+            temperature=0.1,
         )
         translated_text = response.choices[0].message.content.strip()
         return translated_text
-    
+
     except Exception as e:
         logger.error(f"Translation to {target_lang_name} failed: {e}")
         return text

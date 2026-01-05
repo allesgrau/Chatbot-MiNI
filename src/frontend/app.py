@@ -15,9 +15,9 @@ with st.sidebar:
         format_func=lambda x: {
             "pl": "Polski 🇵🇱",
             "en": "English 🇬🇧",
-            "ua": "Українська 🇺🇦"
+            "ua": "Українська 🇺🇦",
         }[x],
-        label_visibility="collapsed"
+        label_visibility="collapsed",
     )
 
 st.title("Chatbot Wydziału MiNI PW 🎓")
@@ -34,33 +34,25 @@ UI_TEXTS = {
     "placeholders": {
         "pl": "O co chcesz zapytać?",
         "en": "What do you want to ask?",
-        "ua": "Що ви хочете запитати?"
+        "ua": "Що ви хочете запитати?",
     },
     "thinking": {
         "pl": "Szukam informacji...",
         "en": "Searching for information...",
-        "ua": "Шукаю інформацію..."
+        "ua": "Шукаю інформацію...",
     },
     "no_answer": {
         "pl": "Błąd braku odpowiedzi.",
         "en": "No answer returned.",
-        "ua": "Відповідь відсутня."
+        "ua": "Відповідь відсутня.",
     },
-    "sources": {
-        "pl": "Źródła",
-        "en": "Sources",
-        "ua": "Джерела"
-    },
-    "api_error": {
-        "pl": "Błąd API",
-        "en": "API error",
-        "ua": "Помилка API"
-    },
+    "sources": {"pl": "Źródła", "en": "Sources", "ua": "Джерела"},
+    "api_error": {"pl": "Błąd API", "en": "API error", "ua": "Помилка API"},
     "connection_error": {
         "pl": "Nie udało się połączyć z chatbotem. Błąd:",
         "en": "Failed to connect to the chatbot. Error:",
-        "ua": "Не вдалося підключитися до чатбота. Помилка:"
-    }
+        "ua": "Не вдалося підключитися до чатбота. Помилка:",
+    },
 }
 
 
@@ -81,8 +73,7 @@ if prompt := st.chat_input(t("placeholders", selected_lang)):
         with st.spinner(t("thinking", selected_lang)):
             try:
                 response = requests.post(
-                    API_URL, 
-                    json={"query": prompt, "language": selected_lang}
+                    API_URL, json={"query": prompt, "language": selected_lang}
                 )
                 if response.status_code == 200:
                     data = response.json()
@@ -91,8 +82,11 @@ if prompt := st.chat_input(t("placeholders", selected_lang)):
 
                     full_response = answer
                     if sources:
-                        full_response += "\n\n**" + t("sources", selected_lang) + ":**\n" + "\n".join(
-                            [f"- {s}" for s in sources]
+                        full_response += (
+                            "\n\n**"
+                            + t("sources", selected_lang)
+                            + ":**\n"
+                            + "\n".join([f"- {s}" for s in sources])
                         )
 
                     st.markdown(full_response)
