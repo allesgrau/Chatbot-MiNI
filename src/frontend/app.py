@@ -1,4 +1,3 @@
-import logging
 import os
 
 import requests
@@ -90,12 +89,14 @@ if prompt := st.chat_input(t("placeholders", selected_lang)):
                             + "\n".join([f"- {s}" for s in sources])
                         )
                     else:
-                        st.error(f"{t('api_error', selected_lang)}: {response.status_code}")
+                        st.error(
+                            f"{t('api_error', selected_lang)}: {response.status_code}"
+                        )
 
                     st.markdown(full_response)
                     st.session_state.messages.append(
                         {"role": "assistant", "content": full_response}
                     )
-                
+
             except Exception as e:
                 st.error(f"{t('connection_error', selected_lang)} {e}")
