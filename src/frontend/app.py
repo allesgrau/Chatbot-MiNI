@@ -1,3 +1,4 @@
+import logging
 import os
 
 import requests
@@ -88,6 +89,14 @@ if prompt := st.chat_input(t("placeholders", selected_lang)):
                             + ":**\n"
                             + "\n".join([f"- {s}" for s in sources])
                         )
+                    else:
+                        error_msg = f"Błąd API: {response.status_code}"
+                        st.error(error_msg)
+                        logger.error(error_msg)
+                except Exception as e:
+                    st.error(f"Nie udało się połączyć z chatbotem. Błąd: {e}")
+                    logger.error(f"Connection error: {e}")
+
 
                     st.markdown(full_response)
                     st.session_state.messages.append(
