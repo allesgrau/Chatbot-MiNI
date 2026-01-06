@@ -4,6 +4,7 @@ volumes:
   final_storage:
   chroma_db:
   hf_cache:
+  data_storage:
 
 x-env: &env
   PYTHONUNBUFFERED: "1"
@@ -30,6 +31,7 @@ services:
     ]
     environment: *env
     volumes:
+      - data_storage:/app/src/data
       - final_storage:/app/src/data/final_storage
       - hf_cache:/root/.cache/huggingface
 
@@ -43,6 +45,7 @@ services:
       python -m pipeline.ingest_facts"
     environment: *env
     volumes:
+      - data_storage:/app/src/data
       - chroma_db:/app/src/data/chroma_db
       - hf_cache:/root/.cache/huggingface
     depends_on:
@@ -87,9 +90,13 @@ services:
       "--server.address",
       "0.0.0.0"
     ]
-    environment: *env
+    environment:
+      <<: *env
+      STREAMLIT_SERVER_ADDRESS: 0.0.0.0
+      STREAMLIT_SERVER_HEADLESS: "true"
+      STREAMLIT_BROWSER_GATHER_USAGE_STATS: "false"
     ports:
-      - "8501:8501"
+      - "80:8501"
     depends_on:
       - api
     restart: always

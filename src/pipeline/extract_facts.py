@@ -1,7 +1,7 @@
 import json
 import os
 
-from pipeline.common import (
+from src.pipeline.common import (
     CURRENT_VERSION,
     MODEL_WORKER,
     get_config,
@@ -124,21 +124,27 @@ def main() -> None:
             base_name = os.path.splitext(txt_file)[0]
             txt_path = os.path.join(folder, txt_file)
 
-            # Logic: Look for metadata JSON in INPUT_DIR regardless of source folder
+            with open(txt_path, encoding="utf-8") as f:
+                lines = f.readlines()
+
+            if lines and lines[0].startswith("URL: "):
+                source_url = lines[0].replace("URL: ", "").strip()
+                text_content = "".join(lines[1:]).strip()
+            else:
+                source_url = txt_file  # Fallback to filename
+                text_content = "".join(lines).strip()
+
+            # Check if there is a metadata file that should override the URL
             meta_path = os.path.join(INPUT_DIR, f"{txt_file.replace('.txt', '.json')}")
             if not os.path.exists(meta_path):
                 meta_path = os.path.join(INPUT_DIR, f"{base_name}.json")
 
-            source_url = txt_file
             if os.path.exists(meta_path):
                 with open(meta_path, encoding="utf-8") as f:
                     meta = json.load(f)
-                    source_url = meta.get("source_url", txt_file)
+                    source_url = meta.get("source_url", source_url)
 
             logger.info(f"Processing: {txt_file} (Source: {source_url})")
-
-            with open(txt_path, encoding="utf-8") as f:
-                text_content = f.read()
 
             content_list = extract_facts_list(text_content, txt_file)
 

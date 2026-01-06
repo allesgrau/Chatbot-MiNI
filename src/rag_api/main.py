@@ -4,8 +4,8 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from rag_api.modules.prompt_builder import build_prompt
-from rag_api.modules.retrieval import get_top_k_chunks
+from src.rag_api.modules.prompt_builder import build_prompt
+from src.rag_api.modules.retrieval import get_top_k_chunks
 
 load_dotenv()
 
